@@ -76,8 +76,8 @@ ORDER BY num_weekday, name
 SELECT 
 	CASE 
 		WHEN age BETWEEN 16 AND 25 THEN '16-25'
-	    WHEN age BETWEEN 26 AND 40 THEN '25-40'
-	    WHEN  age > 40 THEN '40+'
+		WHEN age BETWEEN 26 AND 40 THEN '25-40'
+		WHEN  age > 40 THEN '40+'
 	END age_category,
 	COUNT(customer_id) AS count
 FROM customers
