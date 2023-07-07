@@ -27,7 +27,6 @@ WITH total_avg_val AS
 	INNER JOIN products p
 	ON p.product_id = s.product_id
 )
-
 SELECT
 	CONCAT(first_name, ' ', last_name) AS name,
 	ROUND(AVG(price*quantity), 0) AS average_income
@@ -42,26 +41,17 @@ ORDER BY 2
 ;
 
 --income data for each employee and day of the week
-WITH weekday_income AS
-(
-	SELECT
-		CONCAT(first_name, ' ', last_name) AS name,
-		TO_CHAR(sale_date, 'day') AS weekday,
-		ROUND(SUM(price*quantity), 0) AS income,
-		EXTRACT(isodow FROM sale_date) AS num_weekday
-	FROM employees e
-	INNER JOIN sales s
-		ON e.employee_id = s.sales_person_id
-	INNER JOIN products P
-		ON p.product_id = s.product_id
-	GROUP BY 1, 2, 4
-)
 SELECT
-	name,
-	weekday,
-	income
-FROM weekday_income
-ORDER BY num_weekday, name
+	CONCAT(first_name, ' ', last_name) AS name,
+	TO_CHAR(sale_date, 'day') AS weekday,
+	ROUND(SUM(price*quantity), 0) AS income
+FROM employees e
+INNER JOIN sales s
+	ON e.employee_id = s.sales_person_id
+INNER JOIN products P
+	ON p.product_id = s.product_id
+GROUP BY 1, 2, EXTRACT(isodow FROM sale_date)
+ORDER BY EXTRACT(isodow FROM sale_date), name
 ;
 
 -- Count of customers in different age groups
